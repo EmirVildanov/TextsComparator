@@ -1,0 +1,12 @@
+Line that will stay unchanged
+Line that will be changed
+Line that will stay unchanged 2
+42
+Line that should be deleted/added
+Something
+Something
+Something
+Line that will be changed 2
+We will be deleted/added
+We will be deleted/added
+We will be deleted/added

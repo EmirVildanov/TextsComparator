@@ -1,0 +1,171 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="holeDiv">
+      <table>
+        <caption>Original original.txt</caption>
+        <tr>
+          <td>Line that will stay unchanged</td>
+        </tr>
+        <tr>
+          <td>Line that will be changed</td>
+        </tr>
+        <tr>
+          <td>Line that will stay unchanged 2</td>
+        </tr>
+        <tr>
+          <td>42</td>
+        </tr>
+        <tr>
+          <td>Line that should be deleted/added</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Line that will be changed 2</td>
+        </tr>
+        <tr>
+          <td>We will be deleted/added</td>
+        </tr>
+        <tr>
+          <td>We will be deleted/added</td>
+        </tr>
+        <tr>
+          <td>We will be deleted/added</td>
+        </tr>
+      </table>
+      <table>
+        <caption>Original revised.txt</caption>
+        <tr>
+          <td>Line that will stay unchanged</td>
+        </tr>
+        <tr>
+          <td>Line that will be changed a little bit</td>
+        </tr>
+        <tr>
+          <td>Line that will stay unchanged 2</td>
+        </tr>
+        <tr>
+          <td>42</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Line that will be changed a little bit 2</td>
+        </tr>
+      </table>
+      <table>
+        <caption>original.txt</caption>
+        <tr>
+          <td>Line that will stay unchanged</td>
+        </tr>
+        <tr>
+          <td class="diffChanged">Line that will be changed</td>
+        </tr>
+        <tr>
+          <td>Line that will stay unchanged 2</td>
+        </tr>
+        <tr>
+          <td>42</td>
+        </tr>
+        <tr>
+          <td class="diffDeleted">Line that should be deleted/added</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td class="diffChanged">Line that will be changed 2</td>
+        </tr>
+        <tr>
+          <td class="diffDeleted">We will be deleted/added</td>
+        </tr>
+        <tr>
+          <td class="diffDeleted">We will be deleted/added</td>
+        </tr>
+        <tr>
+          <td class="diffDeleted">We will be deleted/added</td>
+        </tr>
+      </table>
+      <table>
+        <caption>revised.txt</caption>
+        <tr>
+          <td>Line that will stay unchanged</td>
+        </tr>
+        <tr>
+          <td class="diffChanged">Line that will be changed a little bit</td>
+        </tr>
+        <tr>
+          <td>Line that will stay unchanged 2</td>
+        </tr>
+        <tr>
+          <td>42</td>
+        </tr>
+        <tr>
+          <td class="diffAdded">Line that should be deleted/added</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td>Something</td>
+        </tr>
+        <tr>
+          <td class="diffChanged">Line that will be changed a little bit 2</td>
+        </tr>
+        <tr>
+          <td class="diffAdded">We will be deleted/added</td>
+        </tr>
+        <tr>
+          <td class="diffAdded">We will be deleted/added</td>
+        </tr>
+        <tr>
+          <td class="diffAdded">We will be deleted/added</td>
+        </tr>
+      </table>
+      <table class="legend">
+        <caption>Legend</caption>
+        <tr>
+          <td>
+            <div class="rect diffChanged">Changed</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="rect diffDeleted">Deleted</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="rect diffAdded">Added</div>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </body>
+</html>

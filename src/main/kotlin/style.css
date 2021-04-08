@@ -1,0 +1,36 @@
+.holeDiv {
+    justify-content: start;
+    align-content: start;
+    display: flex;
+}
+
+.legend {
+    margin-left: 30px;
+}
+
+tr {
+    line-height: 20px;
+}
+
+td {
+    border: 1px solid black
+}
+
+td:empty::after{
+    content: "\00a0";
+}
+
+.rect {
+    width: 100px;
+    height: 30px;
+}
+
+.diffAdded {
+    background-color:greenyellow
+}
+.diffChanged {
+    background-color:#87cefa
+}
+.diffDeleted {
+    background-color:#dcdcdc
+}

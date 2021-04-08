@@ -1,0 +1,8 @@
+Line that will stay unchanged
+Line that will be changed a little bit
+Line that will stay unchanged 2
+42
+Something
+Something
+Something
+Line that will be changed a little bit 2
