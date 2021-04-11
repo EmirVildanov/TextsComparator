@@ -7,13 +7,13 @@ internal class ComputerInfoTest {
 
     @Test
     fun shouldReturnNullBecauseOfNonExistingFile() {
-        val lines = getFileLines(fileName = resourcesPath + "testFileThatDoNotExist.txt")
+        val lines = getFileLines(filePath = resourcesPath + "testFileThatDoNotExist.txt")
         assertNull(lines)
     }
 
     @Test
     fun shouldReadLinesOfTestFile() {
-        val lines = getFileLines(fileName = resourcesPath + "testToRead.txt")
+        val lines = getFileLines(filePath = resourcesPath + "testToRead.txt")
         assertArrayEquals(arrayOf("line one", "line two", "line three"), lines!!.toTypedArray())
     }
 

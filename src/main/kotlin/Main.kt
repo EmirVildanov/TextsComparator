@@ -6,6 +6,12 @@ import kotlinx.html.stream.appendHTML
 import java.io.*
 import java.lang.Integer.min
 
+/**
+ * Generate table with passed file lines
+ *
+ * @param tableName the table name
+ * @param lines lines of file nedded to put in table
+ */
 fun DIV.originalTable(tableName: String, lines: List<String>) {
     table {
         caption { +tableName }
@@ -19,6 +25,12 @@ fun DIV.originalTable(tableName: String, lines: List<String>) {
     }
 }
 
+/**
+ * Generate table with passed file lines + changes
+ *
+ * @param tableName the table name
+ * @param rowsList rows with information about line delta status
+ */
 fun DIV.diffTable(tableName: String, rowsList: List<Pair<String, DeltaType?>>) {
     table {
         caption { +tableName }
@@ -34,6 +46,12 @@ fun DIV.diffTable(tableName: String, rowsList: List<Pair<String, DeltaType?>>) {
     }
 }
 
+/**
+ * Generate diffTable row
+ *
+ * @param line the line that should be added
+ * @param deltaType deltaType of line to find it's color
+ */
 fun TABLE.diffTableRow(line: String, deltaType: DeltaType? = null) {
     tr {
         if (deltaType != null) {
@@ -54,15 +72,25 @@ fun TABLE.diffTableRow(line: String, deltaType: DeltaType? = null) {
     }
 }
 
-fun TR.diffTableCell(text: String, classes_arg: Set<String>? = null) {
+/**
+ * Generate diffTable row cell
+ *
+ * @param line the line that should be added
+ * @param classes_arg css classes of adding line
+ */
+fun TR.diffTableCell(line: String, classes_arg: Set<String>? = null) {
     td {
         if (classes_arg != null) {
             classes = classes_arg
         }
-        +text
+        +line
     }
 }
 
+/**
+ * Generate legend table that tells info about diff table colors
+ *
+ */
 fun DIV.legendTable() {
     table {
         classes = setOf("legend")
@@ -73,27 +101,41 @@ fun DIV.legendTable() {
     }
 }
 
-fun TABLE.legendTableRow(text: String, classes_arg: Set<String>? = null) {
+/**
+ * Generate diffTable row
+ *
+ * @param line the line that should be added
+ * @param classes_arg css classes of adding line
+ */
+fun TABLE.legendTableRow(line: String, classes_arg: Set<String>? = null) {
     tr {
         td {
             div {
                 if (classes_arg != null) {
                     classes = classes_arg
                 }
-                +text
+                +line
             }
         }
     }
 }
 
+/**
+ * Subfunction of getDiffRowsList function. Handle information about CHANGED lines
+ *
+ * @param rowsList [List] of [Pair]: line from file to it's delta information
+ * @param position index of calculated diff in [rowsList]
+ * @param originalDeltaLines [List] of lines that should be changed
+ * @param revisedDeltaLines [List] of lines to that lines should be changed
+ */
 fun addChangedLinesToRowsList(
     rowsList: MutableList<Pair<String, DeltaType?>>,
     position: Int,
-    fromDeltaLines: List<String>,
-    toDeltaLines: List<String>
+    originalDeltaLines: List<String>,
+    revisedDeltaLines: List<String>
 ) {
-    val fromDeltaLinesNumber = fromDeltaLines.size
-    val toDeltaLinesNumber = toDeltaLines.size
+    val fromDeltaLinesNumber = originalDeltaLines.size
+    val toDeltaLinesNumber = revisedDeltaLines.size
     val deltaLinesNumberMin = min(fromDeltaLinesNumber, toDeltaLinesNumber)
     for (i in 0 until deltaLinesNumberMin) {
         rowsList[position + i] = rowsList[position + i].first to DeltaType.CHANGE
@@ -104,49 +146,72 @@ fun addChangedLinesToRowsList(
         }
     } else if (toDeltaLinesNumber > fromDeltaLinesNumber) {
         for (i in deltaLinesNumberMin until toDeltaLinesNumber) {
-            rowsList.add(position + i, toDeltaLines[i] to DeltaType.INSERT)
+            rowsList.add(position + i, revisedDeltaLines[i] to DeltaType.INSERT)
         }
     }
 }
 
+/**
+ * Get delta information about file's lines
+ *
+ * @param original Lines from file that should be changed
+ * @param diffResult result from diff util
+ * @return [List] of [Pair]: line from file to it's delta information (stay unchanged - null, change, delete, insert)
+ */
 fun getDiffRowsList(
     original: List<String>,
-    diffResult: MutableList<AbstractDelta<String>>
-): MutableList<Pair<String, DeltaType?>> {
+    diffResult: List<AbstractDelta<String>>
+): List<Pair<String, DeltaType?>> {
     val rowsList: MutableList<Pair<String, DeltaType?>> = original.map { it to null }.toMutableList()
     diffResult.reversed().forEach {
         val position = it.source.position
-        val fromDeltaLines = it.source.lines!!
-        val toDeltaLines = it.target.lines!!
+        val originalDeltaLines = it.source.lines!!
+        val revisedDeltaLines = it.target.lines!!
         when (it.type) {
             DeltaType.DELETE -> {
-                for (i in fromDeltaLines.indices) {
+                for (i in originalDeltaLines.indices) {
                     rowsList[position + i] = rowsList[position + i].first to DeltaType.DELETE
                 }
             }
             DeltaType.INSERT -> {
-                for (i in toDeltaLines.indices) {
-                    rowsList.add(position + i, toDeltaLines[i] to DeltaType.INSERT)
+                for (i in revisedDeltaLines.indices) {
+                    rowsList.add(position + i, revisedDeltaLines[i] to DeltaType.INSERT)
                 }
             }
             else -> {
-                addChangedLinesToRowsList(rowsList, position, fromDeltaLines, toDeltaLines)
+                addChangedLinesToRowsList(rowsList, position, originalDeltaLines, revisedDeltaLines)
             }
         }
     }
-    return rowsList
+    return rowsList.toList()
 }
 
-fun getFileLines(fileName: String): List<String>? {
+/**
+ * Get lines from file or return null if file not found
+ *
+ * @param filePath path to file
+ * @return [List] of file lines
+ */
+fun getFileLines(filePath: String): List<String>? {
     return try {
-        val fileLines = File(fileName).readLines()
+        val fileLines = File(filePath).readLines()
         fileLines
     } catch (e: FileNotFoundException) {
-        println("File $fileName not found")
+        println("File $filePath not found")
         null
     }
 }
 
+/**
+ * Generate html file from two files diff information
+ *
+ * @param originalFileName original File name
+ * @param revisedFileName revised File name
+ * @param originalFileLines [List] of lines from original file
+ * @param revisedFileLines [List]  of lines from revised file
+ * @param originalFileRows [List] of [Pair]: line from original file to it's delta information
+ * @param revisedFileRows [List] of [Pair]: line from revised file to it's delta information
+ */
 fun generateHtml(
     originalFileName: String,
     revisedFileName: String,
@@ -179,6 +244,13 @@ fun generateHtml(
     System.setOut(console)
 }
 
+/**
+ * Compare files
+ *
+ * @param originalFilePath path to original file
+ * @param revisedFilePath path to revised file
+ * @return pair of Lists containing information calculated by diff util
+ */
 fun compareFiles(
     originalFilePath: String,
     revisedFilePath: String
