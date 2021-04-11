@@ -220,7 +220,7 @@ fun generateHtml(
     originalFileRows: List<Pair<String, DeltaType?>>,
     revisedFileRows: List<Pair<String, DeltaType?>>
 ) {
-    val resultFileStream = PrintStream(File("test-result.html"))
+    val resultFileStream = PrintStream(File("diff.html"))
     val console = System.out
     System.setOut(resultFileStream)
     System.out.appendHTML().html {
